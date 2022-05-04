@@ -5,7 +5,7 @@ const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</
 const StatisticLine = ({ text, value }) => (
 	<tr>
 		<td>{text}</td>
-		<td>:</td>
+		<td>: </td>
 		<td>{value}</td>
 	</tr>
 );
