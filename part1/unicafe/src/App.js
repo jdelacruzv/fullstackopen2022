@@ -2,20 +2,28 @@ import { useState } from "react";
 
 const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>;
 
-const StatisticLine = (props) => <div>{props.text}: {props.value}</div>;
+const StatisticLine = ({ text, value }) => (
+	<tr>
+		<td>{text}</td>
+		<td>:</td>
+		<td>{value}</td>
+	</tr>
+);
 
-const Statistics = (props) => { 	
-	if (!props.all) return <p>No feedback give</p>;
+const Statistics = ({ good, neutral, bad, all, average, positive, porcen }) => { 	
+	if (!all) return <p>No feedback give</p>;
 
 	return (
-		<div>
-			<StatisticLine text="Good" value={props.good} />
-			<StatisticLine text="Neutral" value={props.neutral} />
-			<StatisticLine text="Bad" value={props.bad} />
-			<StatisticLine text="All" value={props.all} />
-			<StatisticLine text="Average" value={props.average} />
-			<StatisticLine text="Positive" value={props.positive} />
-		</div>
+		<table>
+			<tbody>
+				<StatisticLine text="Good" value={good} />
+				<StatisticLine text="Neutral" value={neutral} />
+				<StatisticLine text="Bad" value={bad} />
+				<StatisticLine text="All" value={all} />
+				<StatisticLine text="Average" value={average} />
+				<StatisticLine text="Positive" value={`${positive} ${porcen}`} />
+			</tbody>
+		</table>
 	);
 };
 
@@ -42,6 +50,7 @@ const App = () => {
 				all={all}
 				average={average}
 				positive={positive}
+				porcen="%"
 			/>
 		</div>
 	);
