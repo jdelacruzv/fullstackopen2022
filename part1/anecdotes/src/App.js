@@ -25,16 +25,25 @@ const App = () => {
     const copy = [...votes];
     copy[selected] += 1;
     setVotes(copy);
-    console.log(copy);
+  };
+
+  const numberVote = () => Math.max(...votes);
+
+  const mostVotedAnecdote = () => {
+    const index = votes.indexOf(numberVote());
+    return anecdotes[index];
   };
 
   return (
     <div>
-      {anecdotes[selected]}
+      <h2>Anecdote of the day</h2>
+      <div>{anecdotes[selected]}</div>
       <div>has {votes[selected]} votes</div>
-      <hr />
       <button onClick={() => storeVotes()}>votes</button>
       <button onClick={() => randomAnecdotes()}>next anecdote</button>
+      <h2>Anecdote with most votes</h2>
+      <div>{mostVotedAnecdote()}</div>
+      <div>has {numberVote()} votes</div>
     </div>
   );
 }
