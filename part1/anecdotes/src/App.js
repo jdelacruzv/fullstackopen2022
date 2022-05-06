@@ -12,6 +12,14 @@ const anecdotes = [
 
 const points = Array(anecdotes.length).fill(0);
 
+const Button = ({ text, handleClick }) => <button onClick={handleClick}>{text}</button>;
+
+const Title = ({ text }) => <h2>{text}</h2>;
+
+const AnecdoteText = ({ text }) => <div>{text}</div>;
+
+const Vote = ({ vote }) => <div>has {vote} votes</div>;
+
 const App = () => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(points);
@@ -35,17 +43,17 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h2>Anecdote of the day</h2>
-      <div>{anecdotes[selected]}</div>
-      <div>has {votes[selected]} votes</div>
-      <button onClick={() => storeVotes()}>votes</button>
-      <button onClick={() => randomAnecdotes()}>next anecdote</button>
-      <h2>Anecdote with most votes</h2>
-      <div>{mostVotedAnecdote()}</div>
-      <div>has {numberVote()} votes</div>
-    </div>
-  );
+		<div>
+      <Title text="Anecdote of the day" />
+			<AnecdoteText text={anecdotes[selected]} />
+			<Vote vote={votes[selected]} />
+			<Button handleClick={() => storeVotes()} text="votes" />
+			<Button handleClick={() => randomAnecdotes()} text="next anecdote" />
+			<Title text="Anecdote with most votes" />
+			<AnecdoteText text={mostVotedAnecdote()} />
+      <Vote vote={numberVote()} />
+		</div>
+	);
 }
 
 export default App;
