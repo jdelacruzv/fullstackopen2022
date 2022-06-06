@@ -1,26 +1,23 @@
+import CountryInfo from "./CountryInfo";
 import ShowCountry from "./ShowCountry";
 
-const ListCountry= ({ query, countries }) => {
-	const filteredByQuery = countries
-		.filter(country =>
-			country.name.common.toLowerCase().startsWith(query.toLowerCase())
-		);
-
-	const showContries = filteredByQuery.map((country) => (
-		<div key={country.name.common}>
-			<p>{country.name.common}</p>
-		</div>
-	));	
-
-	return (
-		!query 
-			? <p></p>
-			: filteredByQuery.length > 10 
-				? <p>Too many macthes, specify another filter</p>
-				: filteredByQuery.length !== 1
-					? showContries
-					:	<ShowCountry filteredByQuery={filteredByQuery} />
+const ListCountry = ({ query, countries }) => {
+	// Convierte a minuscula los nombres de los paises
+	const filteredQuery = countries.filter(country =>
+		country.name.common.toLowerCase().startsWith(query.toLowerCase())
 	);
+
+	const viewCountries =
+		filteredQuery.length === 1 
+			? <CountryInfo filteredQuery={filteredQuery} />
+			: <ShowCountry filteredQuery={filteredQuery} />;
+
+	const viewMessage =
+		filteredQuery.length > 10 
+			?	<p>Too many macthes, specify another filter</p>
+			: viewCountries;
+
+	return !query ? <p></p> : viewMessage;
 };
 
 export default ListCountry;
