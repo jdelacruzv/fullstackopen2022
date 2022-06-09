@@ -5,9 +5,10 @@ import WeatherInfo from "./WeatherInfo";
 const Weather = ({ nameCapital }) => {
 	const [city, setCity] = useState({});
 	const [viewData, setViewData] = useState(false);
-	const api_key = process.env.REACT_APP_API_KEY;
-	
+		
 	useEffect(() => {
+		const api_key = process.env.REACT_APP_API_KEY;
+
 		axios
 			.get(`https://api.openweathermap.org/data/2.5/weather?q=${nameCapital}&appid=${api_key}`)
 			.then(response => {
@@ -15,7 +16,7 @@ const Weather = ({ nameCapital }) => {
 				setCity(response.data);
 				setViewData(true);
 			});
-	}, [nameCapital, api_key]);
+	}, [nameCapital]);
 
 	return viewData ? <WeatherInfo data={city} /> : undefined;
 };

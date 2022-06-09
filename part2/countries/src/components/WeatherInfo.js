@@ -1,7 +1,5 @@
 const WeatherInfo = ({ data }) => {
-	console.log(data);
 	const KELVIN = 273.15;
-	console.log(typeof data.main.temp);
 
 	return (
 		<div>

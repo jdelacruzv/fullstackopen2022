@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import personService from "./services/persons"
+import contactService from "./services/contacts"
 
 const App = () => {
 	const [persons, setPersons] = useState([]);
@@ -11,8 +11,8 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
 	useEffect(() => {
-		personService
-			.getAll()
+		contactService
+			.getAllContacts()
 			.then(initialContacts => {
 				setPersons(initialContacts);
 			});
@@ -30,44 +30,49 @@ const App = () => {
     setFilter(event.target.value);
   };
 
-  const filterPersons = filter 
-    ? persons.filter(person => 
-      person.name.toLowerCase().startsWith(filter.toLowerCase()))
-    : persons;
-
-  const newObject = {
+  const newContact = {
 		name: newName,
     number: newNumber,
     id: persons.length + 1
 	};
 
-	const searchName = () => {
+	const createName = () => {
     persons.find(person => person.name === newName)
       ? alert(`${newName} is already added to phonebook`)
-      : setPersons(persons.concat(newObject));
-  }; 
+			: contactService
+					.createContact(newContact)
+					.then(returnedContact => {
+						setPersons(persons.concat(returnedContact))
+				});
+  };
 
 	const addName = (event) => {
 		event.preventDefault();
-    searchName();
-
-		personService
-			.create(newObject)
-			.then(returnedContact => {
-				console.log(returnedContact);
-			});
-
+    createName();		
 		setNewName("");
-    setNewNumber("");
+		setNewNumber("");
 	};
-	
+
+	const deleteName = (id) => {
+		const person = persons.find(p => p.id === id);
+		window.confirm(`Delete ${person.name} ?`)
+		contactService
+			.deleteContact(id)
+			.then(() => {
+				setPersons(persons.filter(p => p.id !== person.id));
+			});
+	};
+
+	const filterPersons = filter
+		? persons.filter((person) =>
+				person.name.toLowerCase().startsWith(filter.toLowerCase())
+			)		  
+		: persons;
+
   return (
 		<div>
 			<h2>Phonebook</h2>
-			<Filter 
-				filter={filter} 
-				handleChange={handleFilterChange} 
-			/>
+			<Filter filter={filter} handleChange={handleFilterChange} />
 			<h2>add a new</h2>
 			<PersonForm
 				addName={addName}
@@ -77,7 +82,13 @@ const App = () => {
 				handleChangeNumber={handleNumberChange}
 			/>
 			<h2>Numbers</h2>
-			<Persons filterPersons={filterPersons} />
+			{filterPersons.map(person => (
+				<Persons
+					key={person.id}
+					person={person}
+					deleteName={() => deleteName(person.id)}
+				/>
+			))}
 		</div>
 	);
 }

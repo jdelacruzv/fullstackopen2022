@@ -1,10 +1,9 @@
-const Persons = ({ filterPersons }) => {
+const Persons = ({ person, deleteName }) => {
 	return (
-		filterPersons.map((person) => (
-				<div key={person.id}>
-					{person.name} {person.number}
-				</div>
-		))
+		<div>
+			{person.name} {" "} || Tel: {person.number} {" "} 
+			<button onClick={deleteName}>delete</button>
+		</div>
 	);
 };
 
