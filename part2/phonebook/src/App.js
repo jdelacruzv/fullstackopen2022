@@ -35,7 +35,7 @@ const App = () => {
       person.name.toLowerCase().startsWith(filter.toLowerCase()))
     : persons;
 
-  const nameObject = {
+  const newObject = {
 		name: newName,
     number: newNumber,
     id: persons.length + 1
@@ -44,12 +44,19 @@ const App = () => {
 	const searchName = () => {
     persons.find(person => person.name === newName)
       ? alert(`${newName} is already added to phonebook`)
-      : setPersons(persons.concat(nameObject));
+      : setPersons(persons.concat(newObject));
   }; 
 
 	const addName = (event) => {
 		event.preventDefault();
     searchName();
+
+		axios
+			.post("http://localhost:3001/persons", newObject)
+			.then(response => {
+				console.log(response.data);
+			});
+
 		setNewName("");
     setNewNumber("");
 	};
