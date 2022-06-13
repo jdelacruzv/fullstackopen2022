@@ -9,8 +9,16 @@ const PersonForm = ({
 }) => {
 	return (
 		<form onSubmit={addName}>
-			<PersonInput text="Name" newInput={newName} handleChange={handleChangeName} />
-			<PersonInput text="Number" newInput={newNumber} handleChange={handleChangeNumber} />
+			<PersonInput 
+				text="Name" 
+				newInput={newName} 
+				handleChange={handleChangeName}
+			/>
+			<PersonInput 
+				text="Number" 
+				newInput={newNumber} 
+				handleChange={handleChangeNumber} 
+			/>
 			<div>
 				<button type="submit">add</button>
 			</div>

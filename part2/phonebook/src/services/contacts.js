@@ -6,9 +6,15 @@ const getAllContacts = () => {
 	return request.then(response => response.data);
 };
 
-const createContact = (newObject) => {
-	const request = axios.post(url, newObject);
+const createContact = (newContact) => {
+	const request = axios.post(url, newContact);
 	return request.then(response => response.data);
+};
+
+const updateContact = (id, newContact) => {
+	return axios
+		.put(`${url}/${id}`, newContact)
+		.then(response => response.data);
 };
 
 const deleteContact = (id) => {
@@ -19,6 +25,7 @@ const deleteContact = (id) => {
 const contactService = { 
 	getAllContacts, 
 	createContact, 
+	updateContact,
 	deleteContact 
 };
 

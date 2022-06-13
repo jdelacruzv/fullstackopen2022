@@ -15,6 +15,9 @@ const App = () => {
 			.getAllContacts()
 			.then(initialContacts => {
 				setPersons(initialContacts);
+			})
+			.catch(error => {
+				console.log("Error getAllContacts: ", error);
 			});
 	}, []);
 
@@ -30,20 +33,44 @@ const App = () => {
     setFilter(event.target.value);
   };
 
-  const newContact = {
+	const newContact = {
 		name: newName,
-    number: newNumber,
-    id: persons.length + 1
+		number: newNumber,
+		id: persons.length + 1,
+	};
+
+	const updateName = (record, newNumber) => {
+		const { name, id } = record;
+		alert(`${name} is already added to phonebook, replace the old number with a new one?`)
+		const changedPerson = {
+			...record,
+			number: newNumber
+		};
+
+		contactService
+			.updateContact(id, changedPerson)
+			.then(returnedContact => {
+				setPersons(persons.map(person =>
+					person.id !== id ? person : returnedContact
+				))
+			})
+			.catch(error => {
+				console.log("Error updateContact: ", error);
+			});
 	};
 
 	const createName = () => {
-    persons.find(person => person.name === newName)
-      ? alert(`${newName} is already added to phonebook`)
+    const record = persons.find(person => person.name === newName);		
+		record
+			? updateName(record, newNumber)
 			: contactService
 					.createContact(newContact)
 					.then(returnedContact => {
 						setPersons(persons.concat(returnedContact))
-				});
+					})
+					.catch(error => {
+						console.log("Error createContact: ", error);
+					});
   };
 
 	const addName = (event) => {
@@ -60,6 +87,9 @@ const App = () => {
 			.deleteContact(id)
 			.then(() => {
 				setPersons(persons.filter(p => p.id !== person.id));
+			})
+			.catch(error => {
+				console.log("Error deteleContact: ", error);
 			});
 	};
 
