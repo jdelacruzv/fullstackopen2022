@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import contactService from "./services/contacts"
@@ -9,6 +10,10 @@ const App = () => {
 	const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+	const [errorMessage, setErrorMessage] = useState({
+		text: "",
+		color: "transparent"
+	});
 
 	useEffect(() => {
 		contactService
@@ -33,6 +38,19 @@ const App = () => {
     setFilter(event.target.value);
   };
 
+	const handleErrorMessage = (text, color) => {
+		setErrorMessage({
+			text: text,
+			color: color,
+		});
+		setTimeout(() => {
+			setErrorMessage({
+				text: "",
+				color: "transparent",
+			});
+		}, 3000);
+	};
+
 	const newContact = {
 		name: newName,
 		number: newNumber,
@@ -46,16 +64,17 @@ const App = () => {
 			...record,
 			number: newNumber
 		};
-
 		contactService
 			.updateContact(id, changedPerson)
 			.then(returnedContact => {
 				setPersons(persons.map(person =>
 					person.id !== id ? person : returnedContact
-				))
+				));
+				handleErrorMessage(`${newContact.name} successfully updated`, "green");
 			})
 			.catch(error => {
 				console.log("Error updateContact: ", error);
+				handleErrorMessage(`Contact ${newContact.name} was not updated`, "red");
 			});
 	};
 
@@ -66,10 +85,12 @@ const App = () => {
 			: contactService
 					.createContact(newContact)
 					.then(returnedContact => {
-						setPersons(persons.concat(returnedContact))
+						setPersons(persons.concat(returnedContact));
+						handleErrorMessage(`${newContact.name} successfully created`, "green");
 					})
 					.catch(error => {
 						console.log("Error createContact: ", error);
+						handleErrorMessage(`Contact ${newContact.name} was not created`, "red");
 					});
   };
 
@@ -87,9 +108,11 @@ const App = () => {
 			.deleteContact(id)
 			.then(() => {
 				setPersons(persons.filter(p => p.id !== person.id));
+				handleErrorMessage(`${person.name} successfully deleted`, "green");
 			})
 			.catch(error => {
 				console.log("Error deteleContact: ", error);
+				handleErrorMessage(`Contact ${person.name} was not deleted`, "red");
 			});
 	};
 
@@ -102,7 +125,14 @@ const App = () => {
   return (
 		<div>
 			<h2>Phonebook</h2>
-			<Filter filter={filter} handleChange={handleFilterChange} />
+			<Notification 
+				message={errorMessage.text} 
+				color={errorMessage.color} 
+			/>
+			<Filter 
+				filter={filter} 
+				handleChange={handleFilterChange} 
+			/>
 			<h2>add a new</h2>
 			<PersonForm
 				addName={addName}
