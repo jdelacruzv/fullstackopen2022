@@ -103,7 +103,7 @@ const App = () => {
 
 	const deleteName = (id) => {
 		const person = persons.find(p => p.id === id);
-		window.confirm(`Delete ${person.name} ?`)
+		window.confirm(`Delete ${person.name}?`)
 		contactService
 			.deleteContact(id)
 			.then(() => {
@@ -112,7 +112,7 @@ const App = () => {
 			})
 			.catch(error => {
 				console.log("Error deteleContact: ", error);
-				handleErrorMessage(`Contact ${person.name} was not deleted`, "red");
+				handleErrorMessage(`Contact ${person.name} has already been deleted from server`, "red");
 			});
 	};
 
