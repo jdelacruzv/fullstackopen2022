@@ -7,3 +7,16 @@ This course serves as an introduction to modern web application development with
 ### Part 0: Fundamentals of web apps
 - a. General info
 - b. Fundamentals of web apps
+
+### Part 1: Introduction to React
+- a. Introduction to React
+- b. JavaScript
+- c. Component state, event handlers
+- d. A more complex state, debugging React apps
+
+### Part 2: Communicating with server
+- a. Rendering a collection, modules
+- b. Forms
+- c. Getting data from server
+- d. Altering data in server
+- e. Adding styles to React app
