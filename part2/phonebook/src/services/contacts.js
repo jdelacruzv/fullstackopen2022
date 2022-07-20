@@ -1,5 +1,7 @@
 import axios from "axios";
-const url = "http://localhost:3001/persons";
+// const url = "http://localhost:3001/api/persons";
+// const url = "https://serene-death-valley-25613.herokuapp.com/api/persons";
+const url = "/api/persons";
 
 const getAllContacts = () => {
 	const request = axios.get(url);

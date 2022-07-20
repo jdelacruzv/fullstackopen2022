@@ -48,7 +48,7 @@ const App = () => {
 				text: "",
 				color: "transparent",
 			});
-		}, 3000);
+		}, 5000);
 	};
 
 	const newContact = {
@@ -73,8 +73,8 @@ const App = () => {
 				handleErrorMessage(`${newContact.name} successfully updated`, "green");
 			})
 			.catch(error => {
-				console.log("Error updateContact: ", error);
-				handleErrorMessage(`Contact ${newContact.name} was not updated`, "red");
+				console.log("Error updateContact: ", error.response.data.error);
+				handleErrorMessage(`${error.response.data.error}`, "red");
 			});
 	};
 
@@ -89,8 +89,8 @@ const App = () => {
 						handleErrorMessage(`${newContact.name} successfully created`, "green");
 					})
 					.catch(error => {
-						console.log("Error createContact: ", error);
-						handleErrorMessage(`Contact ${newContact.name} was not created`, "red");
+						console.log("Error createContact: ", error.response.data.error);
+						handleErrorMessage(`${error.response.data.error}`, "red");
 					});
   };
 
